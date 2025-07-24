@@ -189,3 +189,48 @@ function loadData() {
 function saveData() {
     localStorage.setItem('taskPlannerData', JSON.stringify(appData));
 }
+// Функции для работы с Хаосом
+function addChaosItem() {
+    const input = document.getElementById('chaosInput');
+    const categorySelect = document.getElementById('chaosCategory');
+    
+    const text = input.value.trim();
+    if (!text) return;
+    
+    const newItem = {
+        text: text,
+        category: categorySelect.value,
+        created: new Date().toISOString()
+    };
+    
+    appData.tasks.chaos.push(newItem);
+    saveData();
+    
+    // Обновляем вид
+    showView('chaos');
+    
+    // Очищаем поле ввода
+    setTimeout(() => {
+        document.getElementById('chaosInput').value = '';
+        document.getElementById('chaosCategory').value = '';
+    }, 100);
+}
+
+function deleteChaosItem(index) {
+    if (confirm('Удалить эту идею?')) {
+        appData.tasks.chaos.splice(index, 1);
+        saveData();
+        showView('chaos');
+    }
+}
+
+function editChaosItem(index) {
+    const item = appData.tasks.chaos[index];
+    const newText = prompt('Редактировать:', item.text);
+    
+    if (newText !== null && newText.trim()) {
+        appData.tasks.chaos[index].text = newText.trim();
+        saveData();
+        showView('chaos');
+    }
+}
