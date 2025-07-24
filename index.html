@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Планировщик задач</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app">
+        <header>
+            <h1>Планировщик задач</h1>
+            <nav class="main-nav">
+                <button class="nav-btn active" data-view="day">День</button>
+                <button class="nav-btn" data-view="calendar">Календарь</button>
+                <button class="nav-btn highlight" data-view="week">Неделя</button>
+                <button class="nav-btn highlight" data-view="chaos">Хаос</button>
+                <button class="nav-btn" data-view="month">Месяц</button>
+                <button class="nav-btn" data-view="quarter">Квартал</button>
+                <button class="nav-btn" data-view="year">Год</button>
+            </nav>
+        </header>
+
+        <main id="main-content">
+            <!-- Контент будет загружаться динамически -->
+            <div id="loading">Загрузка...</div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
