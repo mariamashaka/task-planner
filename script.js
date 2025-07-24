@@ -106,13 +106,48 @@ function getWeekView() {
 }
 
 function getChaosView() {
-    return `
+    const chaosItems = appData.tasks.chaos || [];
+    
+    let html = `
         <h2>Хаос - идеи и мысли</h2>
         <div class="chaos-container">
-            <p>Здесь будут несортированные задачи</p>
-            <button class="btn btn-success">Добавить идею</button>
+            <div class="add-task-section">
+                <input type="text" id="chaosInput" placeholder="Добавьте идею или задачу..." class="task-input">
+                <select id="chaosCategory" class="category-select">
+                    <option value="">Без категории</option>
+                    ${appData.categories.main.map(cat => `<option value="${cat}">${cat}</option>`).join('')}
+                </select>
+                <button onclick="addChaosItem()" class="btn btn-success">Добавить</button>
+            </div>
+            
+            <div class="chaos-list">
+    `;
+    
+    if (chaosItems.length === 0) {
+        html += '<p class="empty-message">Пока никаких идей нет. Добавьте первую!</p>';
+    } else {
+        chaosItems.forEach((item, index) => {
+            html += `
+                <div class="chaos-item">
+                    <div class="task-content">
+                        <span class="task-text">${item.text}</span>
+                        ${item.category ? `<span class="task-category">${item.category}</span>` : ''}
+                    </div>
+                    <div class="task-actions">
+                        <button onclick="editChaosItem(${index})" class="btn-small btn-edit">✏️</button>
+                        <button onclick="deleteChaosItem(${index})" class="btn-small btn-delete">🗑️</button>
+                    </div>
+                </div>
+            `;
+        });
+    }
+    
+    html += `
+            </div>
         </div>
     `;
+    
+    return html;
 }
 
 function getMonthView() {
