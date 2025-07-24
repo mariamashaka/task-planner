@@ -111,6 +111,26 @@ function getChaosView() {
     let html = `
         <h2>Хаос - идеи и мысли</h2>
         <div class="chaos-container">
+            
+            <!-- Управление категориями -->
+            <div class="category-management">
+                <h3>Категории</h3>
+                <div class="category-controls">
+                    <input type="text" id="newCategoryInput" placeholder="Новая категория" class="task-input">
+                    <button onclick="addCategory()" class="btn btn-primary">Добавить категорию</button>
+                </div>
+                <div class="categories-list">
+                    ${appData.categories.main.map((cat, index) => `
+                        <span class="category-tag">
+                            ${cat}
+                            <button onclick="editCategory(${index}, '${cat}')" class="btn-tiny">✏️</button>
+                            <button onclick="deleteCategory(${index})" class="btn-tiny">🗑️</button>
+                        </span>
+                    `).join('')}
+                </div>
+            </div>
+            
+            <!-- Добавление задачи -->
             <div class="add-task-section">
                 <input type="text" id="chaosInput" placeholder="Добавьте идею или задачу..." class="task-input">
                 <select id="chaosCategory" class="category-select">
