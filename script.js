@@ -189,12 +189,79 @@ function getQuarterView() {
 }
 
 function getYearView() {
-    return `
+    const yearTasks = appData.tasks.yearly || [];
+    
+    let html = `
         <h2>Годовое планирование</h2>
         <div class="year-container">
-            <p>Здесь будут годовые планы</p>
+            
+            <!-- Добавление новой задачи -->
+            <div class="add-year-task">
+                <h3>Добавить годовую задачу</h3>
+                <input type="text" id="yearTaskTitle" placeholder="Название задачи" class="task-input">
+                <textarea id="yearTaskDescription" placeholder="Описание задачи" class="task-textarea"></textarea>
+                <select id="yearTaskCategory" class="category-select">
+                    <option value="">Выберите категорию</option>
+                    ${appData.categories.main.map(cat => `<option value="${cat}">${cat}</option>`).join('')}
+                </select>
+                <div class="date-inputs">
+                    <label>Начало: <input type="date" id="yearTaskStart" class="date-input"></label>
+                    <label>Дедлайн: <input type="date" id="yearTaskEnd" class="date-input"></label>
+                </div>
+                <button onclick="addYearTask()" class="btn btn-primary">Добавить задачу</button>
+            </div>
+            
+            <!-- Список задач -->
+            <div class="year-tasks-list">
+    `;
+    
+    if (yearTasks.length === 0) {
+        html += '<p class="empty-message">Пока нет годовых задач. Добавьте первую!</p>';
+    } else {
+        yearTasks.forEach((task, index) => {
+            html += `
+                <div class="year-task" data-index="${index}">
+                    <div class="task-header">
+                        <h4>${task.title}</h4>
+                        <span class="task-category">${task.category || 'Без категории'}</span>
+                        <div class="task-actions">
+                            <button onclick="editYearTask(${index})" class="btn-small">✏️</button>
+                            <button onclick="deleteYearTask(${index})" class="btn-small">🗑️</button>
+                        </div>
+                    </div>
+                    <div class="task-description">${task.description}</div>
+                    <div class="task-dates">
+                        <span>Начало: ${task.startDate || 'не указано'}</span>
+                        <span>Дедлайн: ${task.endDate || 'не указано'}</span>
+                    </div>
+                    
+                    <!-- Этапы задачи -->
+                    <div class="task-stages">
+                        <h5>Этапы:</h5>
+                        ${task.stages && task.stages.length > 0 ? 
+                            task.stages.map((stage, stageIndex) => `
+                                <div class="stage-item">
+                                    <span>${stage.title}</span>
+                                    <span class="stage-date">${stage.deadline || ''}</span>
+                                    <button onclick="editTaskStage(${index}, ${stageIndex})" class="btn-tiny">✏️</button>
+                                    <button onclick="deleteTaskStage(${index}, ${stageIndex})" class="btn-tiny">🗑️</button>
+                                </div>
+                            `).join('') 
+                            : '<p class="no-stages">Этапов пока нет</p>'
+                        }
+                        <button onclick="addTaskStage(${index})" class="btn btn-success btn-small">+ Добавить этап</button>
+                    </div>
+                </div>
+            `;
+        });
+    }
+    
+    html += `
+            </div>
         </div>
     `;
+    
+    return html;
 }
 
 // Загрузка данных из localStorage
