@@ -254,3 +254,71 @@ function editChaosItem(index) {
         showView('chaos');
     }
 }
+// Функции для управления категориями
+function addCategory() {
+    const input = document.getElementById('newCategoryInput');
+    const categoryName = input.value.trim();
+    
+    if (!categoryName) {
+        alert('Введите название категории');
+        return;
+    }
+    
+    if (appData.categories.main.includes(categoryName)) {
+        alert('Такая категория уже существует');
+        return;
+    }
+    
+    appData.categories.main.push(categoryName);
+    saveData();
+    showView('chaos');
+    
+    setTimeout(() => {
+        document.getElementById('newCategoryInput').value = '';
+    }, 100);
+}
+
+function editCategory(index, oldName) {
+    const newName = prompt('Редактировать категорию:', oldName);
+    
+    if (newName !== null && newName.trim() && newName !== oldName) {
+        const trimmedName = newName.trim();
+        
+        // Проверяем, нет ли уже такой категории
+        if (appData.categories.main.includes(trimmedName)) {
+            alert('Такая категория уже существует');
+            return;
+        }
+        
+        // Обновляем категорию
+        appData.categories.main[index] = trimmedName;
+        
+        // Обновляем категории во всех существующих задачах хаоса
+        appData.tasks.chaos.forEach(item => {
+            if (item.category === oldName) {
+                item.category = trimmedName;
+            }
+        });
+        
+        saveData();
+        showView('chaos');
+    }
+}
+
+function deleteCategory(index) {
+    const categoryName = appData.categories.main[index];
+    
+    if (confirm(`Удалить категорию "${categoryName}"? Все задачи этой категории станут без категории.`)) {
+        // Убираем категорию из всех задач
+        appData.tasks.chaos.forEach(item => {
+            if (item.category === categoryName) {
+                item.category = '';
+            }
+        });
+        
+        // Удаляем категорию
+        appData.categories.main.splice(index, 1);
+        saveData();
+        showView('chaos');
+    }
+}
