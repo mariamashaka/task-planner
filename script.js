@@ -194,7 +194,23 @@ function getYearView() {
     let html = `
         <h2>Годовое планирование</h2>
         <div class="year-container">
-            
+            <!-- Управление категориями -->
+            <div class="category-management">
+                <h3>Категории</h3>
+                <div class="category-controls">
+                    <input type="text" id="newYearCategoryInput" placeholder="Новая категория" class="task-input">
+                    <button onclick="addYearCategory()" class="btn btn-primary">Добавить категорию</button>
+                </div>
+                <div class="categories-list">
+                    ${appData.categories.main.map((cat, index) => `
+                        <span class="category-tag">
+                            ${cat}
+                            <button onclick="editYearCategory(${index}, '${cat}')" class="btn-tiny">✏️</button>
+                            <button onclick="deleteYearCategory(${index})" class="btn-tiny">🗑️</button>
+                        </span>
+                    `).join('')}
+                </div>
+            </div>
             <!-- Добавление новой задачи -->
             <div class="add-year-task">
                 <h3>Добавить годовую задачу</h3>
