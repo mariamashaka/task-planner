@@ -405,3 +405,112 @@ function deleteCategory(index) {
         showView('chaos');
     }
 }
+// Функции для годового планирования
+
+// Управление категориями в годовом планировании
+function addYearCategory() {
+    const input = document.getElementById('newYearCategoryInput');
+    const categoryName = input.value.trim();
+    
+    if (!categoryName) {
+        alert('Введите название категории');
+        return;
+    }
+    
+    if (appData.categories.main.includes(categoryName)) {
+        alert('Такая категория уже существует');
+        return;
+    }
+    
+    appData.categories.main.push(categoryName);
+    saveData();
+    showView('year');
+    
+    setTimeout(() => {
+        document.getElementById('newYearCategoryInput').value = '';
+    }, 100);
+}
+
+function editYearCategory(index, oldName) {
+    const newName = prompt('Редактировать категорию:', oldName);
+    
+    if (newName !== null && newName.trim() && newName !== oldName) {
+        const trimmedName = newName.trim();
+        
+        if (appData.categories.main.includes(trimmedName)) {
+            alert('Такая категория уже существует');
+            return;
+        }
+        
+        appData.categories.main[index] = trimmedName;
+        
+        // Обновляем категории во всех годовых задачах
+        appData.tasks.yearly.forEach(task => {
+            if (task.category === oldName) {
+                task.category = trimmedName;
+            }
+        });
+        
+        saveData();
+        showView('year');
+    }
+}
+
+function deleteYearCategory(index) {
+    const categoryName = appData.categories.main[index];
+    
+    if (confirm(`Удалить категорию "${categoryName}"?`)) {
+        // Убираем категорию из всех задач
+        appData.tasks.yearly.forEach(task => {
+            if (task.category === categoryName) {
+                task.category = '';
+            }
+        });
+        
+        appData.categories.main.splice(index, 1);
+        saveData();
+        showView('year');
+    }
+}
+
+// Добавление годовой задачи
+function addYearTask() {
+    const title = document.getElementById('yearTaskTitle').value.trim();
+    const description = document.getElementById('yearTaskDescription').value.trim();
+    const category = document.getElementById('yearTaskCategory').value;
+    const startDate = document.getElementById('yearTaskStart').value;
+    const endDate = document.getElementById('yearTaskEnd').value;
+    
+    if (!title) {
+        alert('Введите название задачи');
+        return;
+    }
+    
+    const newTask = {
+        id: Date.now(), // Уникальный ID
+        title: title,
+        description: description,
+        category: category,
+        startDate: startDate,
+        endDate: endDate,
+        stages: [],
+        created: new Date().toISOString()
+    };
+    
+    if (!appData.tasks.yearly) {
+        appData.tasks.yearly = [];
+    }
+    
+    appData.tasks.yearly.push(newTask);
+    saveData();
+    showView('year');
+    
+    // Очищаем поля
+    setTimeout(() => {
+        document.getElementById('yearTaskTitle').value = '';
+        document.getElementById('yearTaskDescription').value = '';
+        document.getElementById('yearTaskCategory').value = '';
+        document.getElementById('yearTaskStart').value = '';
+        document.getElementById('yearTaskEnd').value = '';
+    }, 100);
+}
