@@ -514,3 +514,101 @@ function addYearTask() {
         document.getElementById('yearTaskEnd').value = '';
     }, 100);
 }
+// Редактирование годовой задачи
+function editYearTask(index) {
+    const task = appData.tasks.yearly[index];
+    
+    const newTitle = prompt('Название задачи:', task.title);
+    if (newTitle === null) return;
+    
+    const newDescription = prompt('Описание задачи:', task.description);
+    if (newDescription === null) return;
+    
+    const newCategory = prompt('Категория:', task.category);
+    if (newCategory === null) return;
+    
+    const newStartDate = prompt('Дата начала (YYYY-MM-DD):', task.startDate);
+    if (newStartDate === null) return;
+    
+    const newEndDate = prompt('Дедлайн (YYYY-MM-DD):', task.endDate);
+    if (newEndDate === null) return;
+    
+    // Обновляем задачу
+    appData.tasks.yearly[index] = {
+        ...task,
+        title: newTitle.trim(),
+        description: newDescription.trim(),
+        category: newCategory.trim(),
+        startDate: newStartDate,
+        endDate: newEndDate
+    };
+    
+    saveData();
+    showView('year');
+}
+
+// Удаление годовой задачи
+function deleteYearTask(index) {
+    const task = appData.tasks.yearly[index];
+    
+    if (confirm(`Удалить задачу "${task.title}"?`)) {
+        appData.tasks.yearly.splice(index, 1);
+        saveData();
+        showView('year');
+    }
+}
+
+// Добавление этапа к задаче
+function addTaskStage(taskIndex) {
+    const stageTitle = prompt('Название этапа:');
+    if (!stageTitle || !stageTitle.trim()) return;
+    
+    const stageDeadline = prompt('Дедлайн этапа (YYYY-MM-DD):');
+    
+    const newStage = {
+        id: Date.now(),
+        title: stageTitle.trim(),
+        deadline: stageDeadline || '',
+        completed: false,
+        created: new Date().toISOString()
+    };
+    
+    if (!appData.tasks.yearly[taskIndex].stages) {
+        appData.tasks.yearly[taskIndex].stages = [];
+    }
+    
+    appData.tasks.yearly[taskIndex].stages.push(newStage);
+    saveData();
+    showView('year');
+}
+
+// Редактирование этапа
+function editTaskStage(taskIndex, stageIndex) {
+    const stage = appData.tasks.yearly[taskIndex].stages[stageIndex];
+    
+    const newTitle = prompt('Название этапа:', stage.title);
+    if (newTitle === null) return;
+    
+    const newDeadline = prompt('Дедлайн этапа (YYYY-MM-DD):', stage.deadline);
+    if (newDeadline === null) return;
+    
+    appData.tasks.yearly[taskIndex].stages[stageIndex] = {
+        ...stage,
+        title: newTitle.trim(),
+        deadline: newDeadline
+    };
+    
+    saveData();
+    showView('year');
+}
+
+// Удаление этапа
+function deleteTaskStage(taskIndex, stageIndex) {
+    const stage = appData.tasks.yearly[taskIndex].stages[stageIndex];
+    
+    if (confirm(`Удалить этап "${stage.title}"?`)) {
+        appData.tasks.yearly[taskIndex].stages.splice(stageIndex, 1);
+        saveData();
+        showView('year');
+    }
+}
