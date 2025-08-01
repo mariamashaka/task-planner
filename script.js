@@ -491,12 +491,12 @@ function addYearTask() {
         alert('Введите название задачи');
         return;
     }
-    
     const newTask = {
         id: Date.now(), // Уникальный ID
         title: title,
         description: description,
         category: category,
+        priority: priority,
         startDate: startDate,
         endDate: endDate,
         stages: [],
