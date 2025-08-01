@@ -516,6 +516,7 @@ function addYearTask() {
         document.getElementById('yearTaskTitle').value = '';
         document.getElementById('yearTaskDescription').value = '';
         document.getElementById('yearTaskCategory').value = '';
+        document.getElementById('yearTaskPriority').value = 'medium';
         document.getElementById('yearTaskStart').value = '';
         document.getElementById('yearTaskEnd').value = '';
     }, 100);
