@@ -242,9 +242,10 @@ function getYearView() {
         yearTasks.forEach((task, index) => {
             html += `
                 <div class="year-task priority-${task.priority || 'medium'}" data-index="${index}">
-                    <div class="task-header">
+<div class="task-header">
                         <h4>${task.title}</h4>
                         <span class="task-category">${task.category || 'Без категории'}</span>
+                        <span class="task-priority priority-${task.priority || 'medium'}">${getPriorityText(task.priority || 'medium')}</span>
                         <div class="task-actions">
                             <button onclick="editYearTask(${index})" class="btn-small">✏️</button>
                             <button onclick="deleteYearTask(${index})" class="btn-small">🗑️</button>
