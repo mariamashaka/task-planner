@@ -241,7 +241,7 @@ function getYearView() {
     } else {
         yearTasks.forEach((task, index) => {
             html += `
-                <div class="year-task" data-index="${index}">
+                <div class="year-task priority-${task.priority || 'medium'}" data-index="${index}">
                     <div class="task-header">
                         <h4>${task.title}</h4>
                         <span class="task-category">${task.category || 'Без категории'}</span>
