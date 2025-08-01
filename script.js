@@ -483,6 +483,7 @@ function addYearTask() {
     const title = document.getElementById('yearTaskTitle').value.trim();
     const description = document.getElementById('yearTaskDescription').value.trim();
     const category = document.getElementById('yearTaskCategory').value;
+    const priority = document.getElementById('yearTaskPriority').value;
     const startDate = document.getElementById('yearTaskStart').value;
     const endDate = document.getElementById('yearTaskEnd').value;
     
