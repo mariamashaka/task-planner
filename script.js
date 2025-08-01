@@ -220,6 +220,11 @@ function getYearView() {
                     <option value="">Выберите категорию</option>
                     ${appData.categories.main.map(cat => `<option value="${cat}">${cat}</option>`).join('')}
                 </select>
+                                <select id="yearTaskPriority" class="category-select">
+                    <option value="medium">Средний приоритет</option>
+                    <option value="high">Высокий приоритет</option>
+                    <option value="low">Низкий приоритет</option>
+                </select>
                 <div class="date-inputs">
                     <label>Начало: <input type="date" id="yearTaskStart" class="date-input"></label>
                     <label>Дедлайн: <input type="date" id="yearTaskEnd" class="date-input"></label>
